@@ -3,6 +3,7 @@ package com.gyms.memberships_manager.dto;
 import com.gyms.memberships_manager.model.PlanType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 
 import java.math.BigDecimal;
@@ -19,6 +20,7 @@ public record MembershipPlanRequest(
         BigDecimal monthlyPriceAmount,
 
         @NotBlank(message = "Currency is required")
+        @Pattern(regexp = "^[A-Z]{3}$", message = "Currency must be a valid 3-letter ISO code (e.g. EUR, PLN)")
         String currency,
 
         @NotNull(message = "Duration is required")
