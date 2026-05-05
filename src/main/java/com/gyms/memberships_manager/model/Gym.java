@@ -51,7 +51,9 @@ public class Gym {
     @Column(unique = true, nullable = false)
     private String name;
 
+    @Column(nullable = false)
     private String address;
+    @Column(nullable = false)
     private String phoneNumber;
 
     @OneToMany(mappedBy = "gym", cascade = CascadeType.ALL, orphanRemoval = true)

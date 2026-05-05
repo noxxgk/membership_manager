@@ -18,7 +18,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
             "FROM Member m " +
             "JOIN m.membershipPlan p " +
             "JOIN p.gym g " +
-            "WHERE m.status = 'ACTIVE' " +
+            "WHERE m.status = com.gyms.memberships_manager.model.MemberStatus.ACTIVE " +
             "GROUP BY g.name, p.currency")
     List<RevenueReportResponse> getRevenueReport();
 }

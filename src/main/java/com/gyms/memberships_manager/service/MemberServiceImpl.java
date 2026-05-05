@@ -2,6 +2,7 @@ package com.gyms.memberships_manager.service;
 
 import com.gyms.memberships_manager.dto.MemberRegistrationRequest;
 import com.gyms.memberships_manager.dto.MemberResponse;
+import com.gyms.memberships_manager.exception.ResourceNotFoundException;
 import com.gyms.memberships_manager.model.Member;
 import com.gyms.memberships_manager.model.MemberStatus;
 import com.gyms.memberships_manager.model.MembershipPlan;
@@ -27,8 +28,8 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional
     public MemberResponse registerMember(MemberRegistrationRequest request) {
-        MembershipPlan plan = planRepository.findById(request.membershipPlanId())
-                .orElseThrow(() -> new IllegalArgumentException("Membership plan with ID " + request.membershipPlanId() + " not found."));
+        MembershipPlan plan = planRepository.findByIdWithLock(request.membershipPlanId())
+                .orElseThrow(() -> new ResourceNotFoundException("Membership plan with ID " + request.membershipPlanId() + " not found."));
         long currentActiveMembers = memberRepository.countByMembershipPlanIdAndStatus(plan.getId(), MemberStatus.ACTIVE);
         if (currentActiveMembers >= plan.getMaxMembers()) {
             throw new IllegalArgumentException("Cannot register. Membership plan has reached its maximum capacity of " + plan.getMaxMembers() + " active members.");
@@ -44,7 +45,7 @@ public class MemberServiceImpl implements MemberService {
     }
     @Override
     public List<MemberResponse> getAllMembers() {
-        return memberRepository.findAll()
+        return memberRepository.findAllWithPlanAndGym()
                 .stream()
                 .map(this::mapToResponse)
                 .toList();
@@ -53,7 +54,7 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     public MemberResponse cancelMembership(Long memberId) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new IllegalArgumentException("Member with ID " + memberId + " not found."));
+                .orElseThrow(() -> new ResourceNotFoundException("Member with ID " + memberId + " not found."));
 
         if (member.getStatus() == MemberStatus.CANCELLED) {
             throw new IllegalArgumentException("Membership is already cancelled.");

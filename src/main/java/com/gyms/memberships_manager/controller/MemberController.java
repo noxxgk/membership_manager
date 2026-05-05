@@ -21,6 +21,11 @@ public class MemberController {
     public MemberResponse registerMember(@Valid @RequestBody MemberRegistrationRequest request) {
         return memberService.registerMember(request);
     }
+    @PostMapping("/plans/{planId}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public MemberResponse registerMemberToPlan(@PathVariable Long planId, @Valid @RequestBody MemberRegistrationRequest request) {
+        return memberService.registerMember(new MemberRegistrationRequest(request.fullName(), request.email(), planId));
+    }
     @GetMapping
     public List<MemberResponse> getAllMembers() {
         return memberService.getAllMembers();

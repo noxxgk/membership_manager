@@ -2,6 +2,7 @@ package com.gyms.memberships_manager.service;
 
 import com.gyms.memberships_manager.dto.MembershipPlanRequest;
 import com.gyms.memberships_manager.dto.MembershipPlanResponse;
+import com.gyms.memberships_manager.exception.ResourceNotFoundException;
 import com.gyms.memberships_manager.model.Gym;
 import com.gyms.memberships_manager.model.MembershipPlan;
 import com.gyms.memberships_manager.repository.GymRepository;
@@ -39,7 +40,7 @@ public class MembershipPlanServiceImpl implements MembershipPlanService {
     @Override
     public List<MembershipPlanResponse> getPlansByGymId(Long gymId) {
         if (!gymRepository.existsById(gymId)) {
-            throw new IllegalArgumentException("Gym with ID " + gymId + " not found.");
+            throw new ResourceNotFoundException("Gym with ID " + gymId + " not found.");
         }
 
         return planRepository.findByGymId(gymId)
