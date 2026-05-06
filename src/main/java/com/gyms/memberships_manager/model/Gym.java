@@ -1,48 +1,16 @@
 package com.gyms.memberships_manager.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import java.util.List;
+
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 public class Gym {
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public List<MembershipPlan> getMembershipPlans() {
-        return membershipPlans;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public void setMembershipPlans(List<MembershipPlan> membershipPlans) {
-        this.membershipPlans = membershipPlans;
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,6 +21,7 @@ public class Gym {
 
     @Column(nullable = false)
     private String address;
+
     @Column(nullable = false)
     private String phoneNumber;
 
