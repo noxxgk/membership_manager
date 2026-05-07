@@ -12,9 +12,11 @@ import java.util.List;
 @RequestMapping("/api/reports")
 public class ReportController {
     private final ReportService reportService;
+
     public ReportController(ReportService reportService) {
         this.reportService = reportService;
     }
+
     @GetMapping("/revenue")
     public List<RevenueReportResponse> getRevenueReport() {
         return reportService.getRevenueReport();

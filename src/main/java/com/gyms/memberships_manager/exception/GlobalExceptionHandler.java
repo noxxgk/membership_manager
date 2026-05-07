@@ -20,6 +20,7 @@ public class GlobalExceptionHandler {
         errorResponse.put("error", ex.getMessage());
         return errorResponse;
     }
+
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public Map<String, String> handleResourceNotFoundException(ResourceNotFoundException ex) {
@@ -27,6 +28,7 @@ public class GlobalExceptionHandler {
         errorResponse.put("error", ex.getMessage());
         return errorResponse;
     }
+
     @ExceptionHandler(DataIntegrityViolationException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public Map<String, String> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
@@ -34,6 +36,7 @@ public class GlobalExceptionHandler {
         errorResponse.put("error", "Data integrity violation: " + ex.getMostSpecificCause().getMessage());
         return errorResponse;
     }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {

@@ -14,4 +14,5 @@ public record MemberRegistrationRequest(
 
         @NotNull(message = "Membership plan ID is required")
         Long membershipPlanId
-) {}
+) {
+}

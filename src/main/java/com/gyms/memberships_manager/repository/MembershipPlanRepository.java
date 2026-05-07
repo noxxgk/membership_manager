@@ -16,6 +16,7 @@ import java.util.Optional;
 public interface MembershipPlanRepository extends JpaRepository<MembershipPlan, Long> {
 
     List<MembershipPlan> findByGymId(Long gymId);
+
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("SELECT p FROM MembershipPlan p WHERE p.id = :id")
     Optional<MembershipPlan> findByIdWithLock(@Param("id") Long id);

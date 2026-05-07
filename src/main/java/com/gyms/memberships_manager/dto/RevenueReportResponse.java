@@ -6,4 +6,5 @@ public record RevenueReportResponse(
         String gymName,
         BigDecimal amount,
         String currency
-) {}
+) {
+}

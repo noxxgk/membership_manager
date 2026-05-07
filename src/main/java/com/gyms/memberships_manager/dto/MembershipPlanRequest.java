@@ -30,4 +30,5 @@ public record MembershipPlanRequest(
         @NotNull(message = "Max members limit is required")
         @Positive(message = "Max members must be greater than zero")
         Integer maxMembers
-) {}
+) {
+}

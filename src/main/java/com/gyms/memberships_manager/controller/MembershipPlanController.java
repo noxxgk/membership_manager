@@ -18,6 +18,7 @@ public class MembershipPlanController {
     public MembershipPlanController(MembershipPlanService planService) {
         this.planService = planService;
     }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public MembershipPlanResponse createPlan(
@@ -25,6 +26,7 @@ public class MembershipPlanController {
             @Valid @RequestBody MembershipPlanRequest request) {
         return planService.createPlan(gymId, request);
     }
+
     @GetMapping
     public List<MembershipPlanResponse> getPlansByGymId(@PathVariable Long gymId) {
         return planService.getPlansByGymId(gymId);

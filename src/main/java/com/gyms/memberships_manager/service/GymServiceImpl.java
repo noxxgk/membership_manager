@@ -2,6 +2,7 @@ package com.gyms.memberships_manager.service;
 
 import com.gyms.memberships_manager.dto.GymRequest;
 import com.gyms.memberships_manager.dto.GymResponse;
+import com.gyms.memberships_manager.mapper.GymMapper;
 import com.gyms.memberships_manager.model.Gym;
 import com.gyms.memberships_manager.repository.GymRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,8 +14,9 @@ import java.util.List;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class GymServiceImpl implements GymService{
+public class GymServiceImpl implements GymService {
     private final GymRepository gymRepository;
+    private final GymMapper gymMapper;
 
     @Override
     public GymResponse createGym(GymRequest request) {
@@ -23,13 +25,10 @@ public class GymServiceImpl implements GymService{
             log.warn("Gym with name '{}' already exists.", request.name());
             throw new IllegalArgumentException("Gym with name '" + request.name() + "' already exists.");
         }
-        Gym gym = new Gym();
-        gym.setName(request.name());
-        gym.setAddress(request.address());
-        gym.setPhoneNumber(request.phoneNumber());
+        Gym gym = gymMapper.toEntity(request);
         Gym savedGym = gymRepository.save(gym);
         log.info("Successfully created gym with ID: {}", savedGym.getId());
-        return mapToResponse(savedGym);
+        return gymMapper.toResponse(savedGym);
     }
 
     @Override
@@ -37,16 +36,7 @@ public class GymServiceImpl implements GymService{
         log.info("Fetching all gyms");
         return gymRepository.findAll()
                 .stream()
-                .map(this::mapToResponse)
+                .map(gymMapper::toResponse)
                 .toList();
-    }
-
-    private GymResponse mapToResponse(Gym gym) {
-        return new GymResponse(
-                gym.getId(),
-                gym.getName(),
-                gym.getAddress(),
-                gym.getPhoneNumber()
-        );
     }
 }

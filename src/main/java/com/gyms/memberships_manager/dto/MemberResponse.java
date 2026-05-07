@@ -12,4 +12,5 @@ public record MemberResponse(
         MemberStatus status,
         String planName,
         String gymName
-) {}
+) {
+}

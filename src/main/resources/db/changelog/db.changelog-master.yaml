@@ -1,0 +1,136 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-gym
+      author: copilot
+      changes:
+        - createTable:
+            tableName: gym
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: address
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: phone_number
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 002-create-membership-plan
+      author: copilot
+      changes:
+        - createTable:
+            tableName: membership_plan
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: gym_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: type
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: monthly_price_amount
+                  type: NUMERIC(19,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: currency
+                  type: VARCHAR(10)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: duration_months
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: max_members
+                  type: INT
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: membership_plan
+            baseColumnNames: gym_id
+            referencedTableName: gym
+            referencedColumnNames: id
+            constraintName: fk_membership_plan_gym
+  - changeSet:
+      id: 003-create-member
+      author: copilot
+      changes:
+        - createTable:
+            tableName: member
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: full_name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: email
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: start_date
+                  type: DATE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: VARCHAR(20)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: membership_plan_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+        - addUniqueConstraint:
+            tableName: member
+            columnNames: full_name, email
+            constraintName: uq_member_full_name_email
+        - addForeignKeyConstraint:
+            baseTableName: member
+            baseColumnNames: membership_plan_id
+            referencedTableName: membership_plan
+            referencedColumnNames: id
+            constraintName: fk_member_membership_plan
+

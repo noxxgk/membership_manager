@@ -4,9 +4,11 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 import java.time.LocalDate;
 
 @Entity
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"full_name", "email"}))
 @Getter
 @Setter
 @NoArgsConstructor
@@ -16,10 +18,10 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "full_name", nullable = false)
     private String fullName;
 
-    @Column(nullable = false)
+    @Column(name = "email", nullable = false)
     private String email;
 
     @Column(nullable = false)

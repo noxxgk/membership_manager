@@ -12,8 +12,12 @@ import java.util.List;
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Long> {
     long countByMembershipPlanIdAndStatus(Long membershipPlanId, MemberStatus status);
+
+    boolean existsByFullNameAndEmail(String fullName, String email);
+
     @Query("SELECT m FROM Member m JOIN FETCH m.membershipPlan p JOIN FETCH p.gym")
     List<Member> findAllWithPlanAndGym();
+
     @Query("SELECT new com.gyms.memberships_manager.dto.RevenueReportResponse(g.name, SUM(p.monthlyPriceAmount), p.currency) " +
             "FROM Member m " +
             "JOIN m.membershipPlan p " +

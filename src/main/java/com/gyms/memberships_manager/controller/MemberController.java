@@ -13,23 +13,22 @@ import java.util.List;
 @RequestMapping("/api/members")
 public class MemberController {
     private final MemberService memberService;
+
     public MemberController(MemberService memberService) {
         this.memberService = memberService;
     }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public MemberResponse registerMember(@Valid @RequestBody MemberRegistrationRequest request) {
         return memberService.registerMember(request);
     }
-    @PostMapping("/plans/{planId}")
-    @ResponseStatus(HttpStatus.CREATED)
-    public MemberResponse registerMemberToPlan(@PathVariable Long planId, @Valid @RequestBody MemberRegistrationRequest request) {
-        return memberService.registerMember(new MemberRegistrationRequest(request.fullName(), request.email(), planId));
-    }
+
     @GetMapping
     public List<MemberResponse> getAllMembers() {
         return memberService.getAllMembers();
     }
+
     @PatchMapping("/{memberId}/cancel")
     public MemberResponse cancelMembership(@PathVariable Long memberId) {
         return memberService.cancelMembership(memberId);

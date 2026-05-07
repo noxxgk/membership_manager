@@ -1,6 +1,7 @@
 package com.gyms.memberships_manager.dto;
 
 import com.gyms.memberships_manager.model.PlanType;
+
 import java.math.BigDecimal;
 
 public record MembershipPlanResponse(
@@ -11,4 +12,5 @@ public record MembershipPlanResponse(
         String currency,
         Integer durationMonths,
         Integer maxMembers
-) {}
+) {
+}

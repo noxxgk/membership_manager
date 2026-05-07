@@ -5,5 +5,6 @@ public record GymResponse(
         String name,
         String address,
         String phoneNumber
-) {}
+) {
+}
 

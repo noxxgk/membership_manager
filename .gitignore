@@ -1,5 +1,7 @@
 HELP.md
 openapi.json
+*.log
+boot_log.txt
 target/
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
