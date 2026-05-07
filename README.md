@@ -7,12 +7,18 @@ Created using Java 21 and Spring Boot 3.
 * Java 21
 * Spring Boot 3.x (Web, Data JPA, Validation)
 * Maven
-* H2 Database (In-memory database)
-* JUnit 5 & Mockito (Unit Testing)
+* H2 Database (In-memory database for local run)
+* Lombok
+* MapStruct
+* Liquibase
+* Springdoc OpenAPI (Swagger)
+* Docker
+* JUnit 5, Mockito & Testcontainers with PostgreSQL (Testing)
 
 ## How to Build and Run
 
-1. Clone the repository (if you haven't already):
+### Option 1: Running locally using Maven
+1. Clone the repository:
    git clone <your-github-repo-url>
    cd memberships_manager
 
@@ -24,8 +30,20 @@ Created using Java 21 and Spring Boot 3.
 
    The application will start on http://localhost:8080.
 
+### Option 2: Running using Docker
+1. Build the Docker image:
+   docker build -t memberships_manager .
+
+2. Run the Docker container:
+   docker run -p 8080:8080 memberships_manager
+
+## API Documentation (Swagger)
+Once the application is running, you can access the interactive API documentation and test endpoints directly from the browser:
+* Swagger UI: http://localhost:8080/swagger-ui.html
+* OpenAPI JSON: http://localhost:8080/v3/api-docs
+
 ## Database Console (H2)
-The application uses an in-memory H2 database. You can inspect the tables and data via the browser:
+The application uses an in-memory H2 database managed via Liquibase migrations. You can inspect the tables and data via the browser:
 * URL: http://localhost:8080/h2-console
 * JDBC URL: jdbc:h2:mem:gymdb
 * Username: sa
@@ -52,14 +70,14 @@ curl -X POST http://localhost:8080/api/gyms/1/plans \
 curl -X GET http://localhost:8080/api/gyms/1/plans
 
 ### 5. Register a new member to a given membership plan (e.g., planId = 1)
-Capacity validation is enforced. The member is automatically set to ACTIVE.
+Capacity validation and uniqueness validation (fullName + email) are enforced via pessimistic locking and database constraints. The member is automatically set to ACTIVE.
 
 curl -X POST http://localhost:8080/api/members \
 -H "Content-Type: application/json" \
 -d "{\"fullName\":\"John Doe\", \"email\":\"john.doe@example.com\", \"membershipPlanId\":1}"
 
 ### 6. List all members
-Includes plan name, gym name, and status.
+Includes plan name, gym name, and status. Optimized with JOIN FETCH to prevent N+1 queries.
 
 curl -X GET http://localhost:8080/api/members
 
